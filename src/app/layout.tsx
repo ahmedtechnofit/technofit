@@ -14,24 +14,29 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Z.ai Code Scaffold - AI-Powered Development",
-  description: "Modern Next.js scaffold optimized for AI-powered development with Z.ai. Built with TypeScript, Tailwind CSS, and shadcn/ui.",
-  keywords: ["Z.ai", "Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "AI development", "React"],
-  authors: [{ name: "Z.ai Team" }],
+  title: "TechnoFit - Tech × Fitness × Nutrition",
+  description: "منصة شخصية احترافية تجمع بين التكنولوجيا، كمال الأجسام، والتغذية. نقدم تحليلات رياضية ذكية وخطط غذائية مخصصة.",
+  keywords: ["تشنوفيت", "TechnoFit", "تكنولوجيا رياضية", "كمال أجسام", "تغذية", "خطط غذائية", "تحليل رياضي", "تطوير مواقع"],
+  authors: [{ name: "TechnoFit Team" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/logo.svg",
   },
   openGraph: {
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
-    url: "https://chat.z.ai",
-    siteName: "Z.ai",
+    title: "TechnoFit - Tech × Fitness × Nutrition",
+    description: "منصة شخصية احترافية تجمع بين التكنولوجيا، كمال الأجسام، والتغذية",
+    url: "https://technofit.vercel.app",
+    siteName: "TechnoFit",
     type: "website",
+    locale: "ar_EG",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
+    title: "TechnoFit - Tech × Fitness × Nutrition",
+    description: "منصة شخصية احترافية تجمع بين التكنولوجيا، كمال الأجسام، والتغذية",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -41,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >

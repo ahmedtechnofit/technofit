@@ -9,4 +9,5 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
 };
 
+// Force restart - cache cleared
 export default nextConfig;
