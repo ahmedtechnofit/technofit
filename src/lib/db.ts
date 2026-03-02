@@ -7,10 +7,15 @@ const globalForPrisma = globalThis as unknown as {
 // Force new client when schema changes
 const prismaClientSingleton = () => {
   return new PrismaClient({
-    log: ['query'],
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   })
 }
 
-export const db = globalForPrisma.prisma ?? prismaClientSingleton()
+// Only create PrismaClient if DATABASE_URL is available
+export const db = process.env.DATABASE_URL 
+  ? (globalForPrisma.prisma ?? prismaClientSingleton())
+  : null as unknown as PrismaClient; // Type cast for build time
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
+if (process.env.NODE_ENV !== 'production' && process.env.DATABASE_URL) {
+  globalForPrisma.prisma = db
+}

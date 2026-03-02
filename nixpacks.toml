@@ -8,6 +8,8 @@ cmds = ['bun install']
 
 [phases.build]
 
+# Set a dummy DATABASE_URL for build time (Prisma generate needs it)
+env = { DATABASE_URL = 'postgresql://dummy:dummy@localhost:5432/dummy' }
 cmds = ['npx prisma generate', 'bun run build']
 
 [start]
