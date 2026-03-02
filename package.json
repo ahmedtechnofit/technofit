@@ -4,11 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000",
-    "prebuild": "bash scripts/prebuild.sh",
-    "build": "next build",
+    "build": "DATABASE_URL=${DATABASE_URL:-postgresql://dummy:dummy@localhost:5432/dummy} prisma generate && next build",
     "start": "npx prisma db push --accept-data-loss && next start -p $PORT",
-    "lint": "eslint .",
-    "postinstall": "prisma generate"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
