@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ['openssl', 'python3']
+
+[phases.install]
+cmds = ['bun install']
+
+[phases.build]
+cmds = ['bash scripts/prebuild.sh', 'bun run build']
+
+[start]
+cmd = 'npx prisma db push --accept-data-loss && next start -p $PORT'
