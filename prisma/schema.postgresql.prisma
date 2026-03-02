@@ -1,0 +1,102 @@
+// This is your Prisma schema file for PostgreSQL (FREE HOSTING)
+// استخدم هذا الملف عند النشر على الاستضافة المجانية
+// للمزيد: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  content         String
+  excerpt         String
+  imageUrl        String?
+  imageAlt        String?
+  category        String
+  tags            String   // JSON array of tags
+  published       Boolean  @default(false)
+  likes           Int      @default(0)
+  views           Int      @default(0)
+  metaTitle       String?
+  metaDescription String?
+  keywords        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  likesRelation Like[]
+  comments      Comment[]
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  postId    String
+  ipAddress String
+  userAgent String?
+  createdAt DateTime @default(now())
+  
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  @@unique([postId, ipAddress])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  parentId  String?  // For replies
+  name      String
+  email     String
+  content   String
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  post     Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Comment[] @relation("CommentReplies")
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String?
+  status    String   @default("new") // new, read, replied
+  createdAt DateTime @default(now())
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  icon        String   // Icon name from lucide
+  features    String   // JSON array of features
+  price       String?
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SiteConfig {
+  id                String   @id @default(cuid())
+  key               String   @unique
+  value             String
+  updatedAt         DateTime @updatedAt
+}
+
+model UploadedImage {
+  id           String   @id @default(cuid())
+  originalName String
+  url          String
+  publicId     String?
+  size         Int
+  createdAt    DateTime @default(now())
+}

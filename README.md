@@ -41,7 +41,7 @@
 | Tailwind CSS | التنسيقات |
 | shadcn/ui | مكونات UI |
 | Prisma | ORM لقاعدة البيانات |
-| SQLite | قاعدة البيانات |
+| SQLite / PostgreSQL | قاعدة البيانات |
 | Lucide Icons | الأيقونات |
 
 ## 🚀 البدء
@@ -54,8 +54,8 @@
 
 ```bash
 # استنساخ المشروع
-git clone https://github.com/YOUR_USERNAME/technofit.git
-cd technofit
+gh repo clone technofit90/TechnoFit
+cd TechnoFit
 
 # تثبيت التبعيات
 bun install
@@ -66,6 +66,26 @@ bun run db:push
 # تشغيل الخادم
 bun run dev
 ```
+
+## 🌐 النشر على الاستضافة المجانية
+
+### قاعدة بيانات PostgreSQL مجانية
+
+| المنصة | المساحة | الرابط |
+|--------|---------|-------|
+| Supabase | 500 MB | [supabase.com](https://supabase.com) |
+| Neon | 512 MB | [neon.tech](https://neon.tech) |
+| Railway | 1 GB | [railway.app](https://railway.app) |
+
+### خطوات النشر
+
+1. أنشئ قاعدة بيانات PostgreSQL مجانية من Supabase أو Neon
+2. انسخ Connection String
+3. استبدل `prisma/schema.prisma` بـ `prisma/schema.postgresql.prisma`
+4. أضف `DATABASE_URL` في متغيرات البيئة
+5. انشر على Vercel أو Railway
+
+📖 **دليل مفصل**: راجع ملف `HOSTING_GUIDE.md`
 
 ### بيانات الدخول للمشرف
 ```
