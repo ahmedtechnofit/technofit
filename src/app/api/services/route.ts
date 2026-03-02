@@ -4,11 +4,11 @@ import { db } from '@/lib/db';
 // GET - List all services
 export async function GET() {
   try {
-    // Check if db.service exists (might not exist if Prisma client is cached)
-    if (!db.service) {
+    // Check if database is available
+    if (!process.env.DATABASE_URL) {
       return NextResponse.json({ services: [] });
     }
-    
+
     const services = await db.service.findMany({
       where: { active: true },
       orderBy: { order: 'asc' },
@@ -17,7 +17,6 @@ export async function GET() {
     return NextResponse.json({ services });
   } catch (error) {
     console.error('Error fetching services:', error);
-    // Return empty array on error - frontend will use default services
     return NextResponse.json({ services: [] });
   }
 }
@@ -25,10 +24,10 @@ export async function GET() {
 // POST - Create a new service
 export async function POST(request: NextRequest) {
   try {
-    if (!db.service) {
-      return NextResponse.json({ error: 'Service model not available' }, { status: 500 });
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
     }
-    
+
     const body = await request.json();
     const { title, description, icon, features, price, order } = body;
     
@@ -57,10 +56,10 @@ export async function POST(request: NextRequest) {
 // PUT - Update a service
 export async function PUT(request: NextRequest) {
   try {
-    if (!db.service) {
-      return NextResponse.json({ error: 'Service model not available' }, { status: 500 });
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
     }
-    
+
     const body = await request.json();
     const { id, title, description, icon, features, price, order, active } = body;
     
@@ -92,10 +91,10 @@ export async function PUT(request: NextRequest) {
 // DELETE - Delete a service
 export async function DELETE(request: NextRequest) {
   try {
-    if (!db.service) {
-      return NextResponse.json({ error: 'Service model not available' }, { status: 500 });
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
     }
-    
+
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get('id');
     

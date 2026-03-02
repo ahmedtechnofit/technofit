@@ -4,6 +4,20 @@ import { db } from '@/lib/db';
 // GET - List all posts with pagination
 export async function GET(request: NextRequest) {
   try {
+    // Check if database is available
+    if (!process.env.DATABASE_URL) {
+      console.warn('DATABASE_URL not set, returning empty posts');
+      return NextResponse.json({
+        posts: [],
+        pagination: {
+          page: 1,
+          limit: 10,
+          total: 0,
+          totalPages: 0,
+        },
+      });
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
@@ -51,13 +65,26 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error fetching posts:', error);
-    return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
+    // Return empty array instead of error
+    return NextResponse.json({
+      posts: [],
+      pagination: {
+        page: 1,
+        limit: 10,
+        total: 0,
+        totalPages: 0,
+      },
+    });
   }
 }
 
 // POST - Create a new post
 export async function POST(request: NextRequest) {
   try {
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+
     const body = await request.json();
     const { title, slug, content, excerpt, imageUrl, imageAlt, category, tags, published, metaTitle, metaDescription, keywords } = body;
     

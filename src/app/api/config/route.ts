@@ -4,6 +4,11 @@ import { db } from '@/lib/db';
 // GET - Get site configuration
 export async function GET(request: NextRequest) {
   try {
+    // Check if database is available
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({});
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const key = searchParams.get('key');
     
@@ -21,13 +26,17 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(configMap);
   } catch (error) {
     console.error('Error fetching config:', error);
-    return NextResponse.json({ error: 'Failed to fetch config' }, { status: 500 });
+    return NextResponse.json({});
   }
 }
 
 // POST - Update site configuration
 export async function POST(request: NextRequest) {
   try {
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+
     const body = await request.json();
     const { key, value } = body;
     

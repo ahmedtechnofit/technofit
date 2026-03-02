@@ -4,18 +4,23 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Force new client when schema changes
 const prismaClientSingleton = () => {
   return new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
 }
 
-// Only create PrismaClient if DATABASE_URL is available
-export const db = process.env.DATABASE_URL 
-  ? (globalForPrisma.prisma ?? prismaClientSingleton())
-  : null as unknown as PrismaClient; // Type cast for build time
+// Check if DATABASE_URL exists
+const databaseUrl = process.env.DATABASE_URL
 
-if (process.env.NODE_ENV !== 'production' && process.env.DATABASE_URL) {
+if (!databaseUrl) {
+  console.warn('⚠️ DATABASE_URL is not set. Database operations will fail.')
+}
+
+export const db = databaseUrl 
+  ? (globalForPrisma.prisma ?? prismaClientSingleton())
+  : null as unknown as PrismaClient
+
+if (process.env.NODE_ENV !== 'production' && databaseUrl) {
   globalForPrisma.prisma = db
 }
