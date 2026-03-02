@@ -3,12 +3,8 @@
   "build": {
     "builder": "NIXPACKS",
     "buildEnv": {
-      "DATABASE_URL": "postgresql://dummy:dummy@localhost:5432/dummy",
-      "NIXPACKS_NO_CACHE": "1"
-    },
-    "watchPatterns": [
-      "/**"
-    ]
+      "DATABASE_URL": "postgresql://dummy:dummy@localhost:5432/dummy"
+    }
   },
   "deploy": {
     "startCommand": "bunx prisma db push --accept-data-loss && next start -p $PORT",

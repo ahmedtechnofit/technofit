@@ -1,18 +1,12 @@
 [phases.setup]
-
-nixPkgs = ['...', 'openssl', 'python3']
+nixPkgs = ['openssl', 'python3']
 
 [phases.install]
-
-# Clear any cached node_modules and reinstall fresh
-cmds = ['rm -rf node_modules', 'rm -rf .next', 'bun install']
+cmds = ['bun install']
 
 [phases.build]
-
-# Set a dummy DATABASE_URL for build time (Prisma generate needs it)
 env = { DATABASE_URL = 'postgresql://dummy:dummy@localhost:5432/dummy' }
 cmds = ['bunx prisma generate', 'bun run build']
 
 [start]
-
-cmd = 'bunx prisma db push --accept-data-loss && next start -p $PORT'
+cmd = 'next start -p $PORT'
